@@ -1,6 +1,8 @@
 # BlackChat
 # made by p0is0n [aka]
 
+![blackchat](https://cloud.githubusercontent.com/assets/25853423/23629642/8fcde29e-02b8-11e7-923d-5019907683e7.png)
+
 BlackChat is a Python Chat software I'm making...
 It probably will take a long time because I'm a student and I have a lot of things to do.
 
