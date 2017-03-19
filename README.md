@@ -11,7 +11,7 @@ So this project is divided in two different versions:
 - a CLI based version running on Unix based systems
 - another version based on the web, will be made using Twisted framework
 
-The particularity of this open-source python software will be the security (encryption PGP) and the anonimity based on relay nodes servers (bit like Tor). 
+The particularity of this open-source python software will be the security (AES 256 bit encryption system) and the anonimity based on relay nodes servers (bit like Tor). 
 
 The CLI version is a tool you can use through the terminal, launching your client script to connect after creating an account. You can send strings and files (all kinds except pictures for the moment)
 
