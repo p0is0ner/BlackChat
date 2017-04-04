@@ -44,11 +44,11 @@ class DatabaseAdapter:
         if lock[0][0] == username and lock[1][1] == password:  # checking if the account exists
             cursor.close()  # closing cursor
             connection.close()  # closing connection
-            return 'accepted'  # returning prefix to the server so it can accept the client
+            return True  # returning prefix to the server so it can accept the client
         else:
             cursor.close()  # closing cursor
             connection.close()  # closing connection
-            return 'denied'  # login process failed
+            return False  # login process failed
 
     def register_user(self, username, password):
         """
@@ -69,11 +69,11 @@ class DatabaseAdapter:
         try:
             cursor.execute(self.register_process, (username, password))
         except psycopg2.IntegrityError:
-            return 'denied'
+            return False
 
         cursor.close()
         connection.close()
-        return 'registered'
+        return True
 
     def update_username(self, username):
         """
@@ -92,12 +92,12 @@ class DatabaseAdapter:
             cursor.execute(self.update_username, (username, ))
             cursor.close()
             connection.close()
-            return 'done'
+            return True
 
         except psycopg2.Error:
             cursor.close()
             connection.close()
-            return 'failed'
+            return False
 
     def delete_account(self, username, password):
         """
@@ -118,9 +118,9 @@ class DatabaseAdapter:
             cursor.execute(self.delete_account, (username, ))
             cursor.close()
             connection.close()
-            return 'done'
+            return True
         except psycopg2.Error:
-            return'failed'
+            return False
 
     def create_table(self):
         try:
@@ -135,9 +135,8 @@ class DatabaseAdapter:
             cursor.execute(self.create_table)
             cursor.close()
             connection.close()
-            return 'done'
+            return True
         except psycopg2.Error:
             cursor.close()
             connection.close()
-            return 'failed'
-
+            return False
