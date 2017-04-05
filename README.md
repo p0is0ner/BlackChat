@@ -1,5 +1,5 @@
 # BlackChat
-# made by p0is0n [aka]
+# made by p0is0n 
 
 ![blackchat](https://cloud.githubusercontent.com/assets/25853423/23629642/8fcde29e-02b8-11e7-923d-5019907683e7.png)
 
