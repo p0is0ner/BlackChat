@@ -16,3 +16,10 @@ class Container:  # where all queries are stored as strings
         self.delete_account = 'DELETE FROM users WHERE username = ?'
         # deleting the table, the server will be formatted
         self.delete_table = 'DELETE FROM users'
+        # select all username that corresponds to a variable
+        # kind of verification test for the register process
+        self.fetch_username = 'SELECT username FROM users WHERE username = ?'
+        # select ip address corresponding to an username to use PM method
+        self.fetch_ip = 'SELECT ip FROM users WHERE username = ?'
+        # select username and password to validate identification test
+        self.fetch_account = 'SELECT username, password FROM users WHERE username = ? AND password = ?'
