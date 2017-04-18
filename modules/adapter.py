@@ -22,13 +22,21 @@ class Adapter:
         # deleting the table, run this query in the server shell,
         #  the server will abort and delete all files related to it
         self.delete_table = container.delete_table
+        # fetching ip address
+        self.fetch_ip = container.fetch_ip
+        # fetching account data
+        self.fetch_account = container.fetch_account
+        # list to return username and password in same container
+        self._account_data = []
+        # username fetching
+        self.fetch_username = container.fetch_username
         # variable containing database name
         self.database = 'blackchat.db'
         # instance of the conn
         self.conn = sqlite3.connect(self.database)
         # instance of the cursor
         self.cursor = self.conn.cursor()
-        
+
     def close_conn(self):
         """
         this function will be called in all others to close the connection after the
@@ -84,7 +92,7 @@ class Adapter:
         cursor = conn.cursor()
 
         try:
-            cursor.execute(self.delete_account, (username, ))
+            cursor.execute(self.delete_account, (username,))
             conn.commit()
             self.close_conn()
             return True
@@ -109,6 +117,59 @@ class Adapter:
             conn.commit()
             self.close_conn()
             return True
+        except sqlite3.OperationalError:
+            self.close_conn()
+            return False
+
+    def ip_fetch(self, username):
+        """
+        IP fetching in function of a given username
+        used for private messaging 
+        :param username: 
+        :return: 
+        """
+
+        try:
+            self.cursor.execute(self.fetch_ip, (username, ))  # as tuple
+            ip = self.cursor.fetchall()[0][0]  # returning ip without dictionary or list form, as simple string
+            # using [0] * 2 to perform socket.send()
+            self.close_conn()
+            return ip
+
+        except sqlite3.OperationalError:
+            self.close_conn()
+            return False  # this shouldn't happen but anyway if there isn't an ip for an user...
+
+    def fetch_account(self, username, password):
+        """
+        this returns True if the account exists and the fetched data is equal to the provided data in params
+        :param username: as string (original)
+        :param password: hashed and salted password (never use plain text performing (insecure))
+        :return: 
+        """
+        try:
+            self.cursor.execute(self.fetch_account, (username, password))
+            fetched_data = self.cursor.fetchall()
+            self._account_data.append(fetched_data[0])
+            self._account_data.append(fetched_data[1])
+            self.close_conn()
+            return self._account_data
+        except sqlite3.OperationalError:
+            self.close_conn()
+            return False
+    
+    def fetch_username(self, username):
+        """
+        fetch the username and returns it as a single string to execute == test with username provided by user
+        :param username: 
+        :return: 
+        """
+        try:
+            self.cursor.execute(self.fetch_username, (username, ))
+            fetched_data = self.cursor.fetchall()
+            fetched_username = fetched_data[0]
+            self.close_conn()
+            return fetched_username
         except sqlite3.OperationalError:
             self.close_conn()
             return False
